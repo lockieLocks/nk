@@ -2,6 +2,7 @@ import discord
 import socket
 from colorama import Fore, init, Style
 from pystyle import Colorate, Colors
+from cogs.discord_token_checker import check_discord_token
 import os
 
 intents = discord.Intents.default()
@@ -27,7 +28,7 @@ S:::S       S:::S SSSSS S:::S SSSSS         `:;          `:; S:::S
 S;;;S       S;;;S SSSSS S;;;S  SSSSS                         S;;;S 
 S%%%S SSSSS S%%%S SSSSS S%%%S  SSSSS                   .SSSS S%%%S 
 SSSSSsSS;:' SSSSSsSSSSS SSSSS   SSSSS                  `:;SSsSSSSS 
-                                                                                                                                
+
 ┌─────────────────┐                        ┌─────────┐                          ┌───────────┐            
 ├──── Osint-Tools ┤────────────┬───────────┤ Discord ├────────────┬─────────────┤ Utilities ├────────────┤
 └─────────────────┘            │           └─────────┘            │             └───────────┘            │
@@ -35,7 +36,6 @@ SSSSSsSS;:' SSSSSsSSSSS SSSSS   SSSSS                  `:;SSsSSSSS
 │────────────────────────────────────────────────────────────────────────────────────────────────────────│
 │ [N] Next Page  |  [B] Back  |  [C] Credits | [Q] Quit                                                  │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
 '''
 
 def main():
@@ -54,6 +54,7 @@ def discord_menu():
 ┌──({hostname}&)-[~Menu -]│
 └─$>'''
     ascii_ = """
+
     .sSSSSs.                                                                                       .sSSSSSSs.  
     SSSSSSSSSs. SSSSS .sSSSSSSSs. .sSSSSs.    .sSSSSs.    .sSSSSSSSs. .sSSSSs.                     `SSSS SSSSs 
     S SSS SSSSS S SSS S SSS SSSS' S SSSSSSSs. S SSSSSSSs. S SSS SSSSS S SSSSSSSs.                        S SSS 
@@ -62,23 +63,43 @@ def discord_menu():
     S:::S SSSSS S:::S .sSSS SSSSS S:::S SSSSS S:::S SSSSS S:::S SSSSS S:::S SSSSS       `:;          `:; S:::S 
     S;;;S SSSSS S;;;S S;;;S SSSSS S;;;S SSSSS S;;;S SSSSS S;;;S SSSSS S;;;S SSSSS                        S;;;S 
     S%%%S SSSS' S%%%S S%%%S SSSSS S%%%S SSSSS S%%%S SSSSS S%%%S SSSSS S%%%S SSSS'                  .SSSS S%%%S 
-    SSSSSsS;:'  SSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSS SSSSS SSSSSsS;:'                   `:;SSsSSSSS         
-        ---[INFO]---                                                                                     --[INFO]--
+    SSSSSsS;:'  SSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSS SSSSS SSSSSsS;:'                   `:;SSsSSSSS       
+
+
+        ---[INFO]---
     [1] Discord Token Checker
     [2] Discord Webhook Checker
     [3] Discord Guild ID Checker
     """
+    proc = Colorate.Diagonal(Colors.white_to_red, ascii_, 1) # pyright: ignore[reportAttributeAccessIssue] <- I couldnt figure out why Pylance kept flagging this.
+    print(proc)
     opt = input(root).lower().strip()
     if opt == "1" or opt == "01":
-        print("Wont be added for a while, sorry.")
+        istxt = input("Are you using a txt File? (y/n): ").lower().strip()
+        if istxt == "y" or istxt == "yes":
+            txt_list = True
+        else:
+            txt_list = False
+        token = input("Enter a Discord token")
+        result = check_discord_token(token, txt_list)
+        print(result)
+        input("Press Enter to continue...")
     elif opt == "2" or opt == "02":
         print("Wont be added for a while, sorry.")
+        input("Press Enter to continue...")
     elif opt == "3" or opt == "03":
         print("Wont be added for a while, sorry.")
-
+        input("Press Enter to continue...")
+    else:
+        print("Invalid option")
+        input("Press Enter to continue...")
 class Destruction:
     def __init__(self):
         pass
 
-while True:
-    main()
+try:
+    while True:
+        main()
+except KeyboardInterrupt:
+    print("\n" + Fore.LIGHTMAGENTA_EX + "Goodbye!" + Style.RESET_ALL)
+    exit(0)
