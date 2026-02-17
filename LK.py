@@ -4,6 +4,7 @@ from colorama import Fore, init, Style
 from pystyle import Colorate, Colors
 from cogs.token_checker import check_discord_token
 from cogs.webhook_checker import check_webhook
+from cogs.guild_checker import get_info
 import os
 import sys
 
@@ -20,7 +21,7 @@ root = (Fore.RED+f"""
 ┌──({hostname}&)-[~Menu -]│
 └─$> """)
 
-ascii_ = '''
+ascii_ = r'''
 SSSSS       .sSSSSs.    .sSSS  SSSSS                   .sSSSSSSs.  
 SSSSS       SSSSSSSSSs. SSSSS  SSSSS                   `SSSS SSSSs 
 S SSS       S SSS SSSSS S SSS SSSSS                          S SSS 
@@ -55,7 +56,7 @@ def discord_menu():
     root = (Fore.RED+f'''
 ┌──({hostname}&)-[~Menu -]│
 └─$>''')
-    ascii_ = """
+    ascii_ = r"""
 
     .sSSSSs.                                                                                       .sSSSSSSs.  
     SSSSSSSSSs. SSSSS .sSSSSSSSs. .sSSSSs.    .sSSSSs.    .sSSSSSSSs. .sSSSSs.                     `SSSS SSSSs 
@@ -93,11 +94,12 @@ def discord_menu():
         print(result)
         input("Press Enter to continue...")
     elif opt == "3" or opt == "03":
-        print("Wont be added for a while, sorry.")
-        input("Press Enter to continue...")
-    elif opt == "n" or opt == "next":
         code = input("Enter Invite Code >> ")
-        input("Press Enter to continue...")
+        print(get_info(code))
+        input("Press Enter to Return...")
+    elif opt == "n" or opt == "next":
+        print("Wont be added for a while, sorry.")
+        input("Press Enter to Return...")
     elif opt == "q" or opt == "quit":
         sys.exit()
     else:
