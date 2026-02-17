@@ -69,10 +69,11 @@ def discord_menu():
     SSSSSsS;:'  SSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSS SSSSS SSSSSsS;:'                   `:;SSsSSSSS       
 
 
-        ---[INFO]---
-    [1] Discord Token Checker
-    [2] Discord Webhook Checker
-    [3] Discord Guild INFO Checker
+        ---[INFO]---                    ---[WEBHOOK]---
+    [1] Discord Token Checker         [4] Webhook Spammer
+    [2] Discord Webhook Checker       [5] Webhook Change Name
+    [3] Discord Guild INFO Checker    [6] Webhook Delete
+                                      [7] Webhook Change PFP
     """
     proc = Colorate.Diagonal(Colors.white_to_red, ascii_, 1) # pyright: ignore[reportAttributeAccessIssue] <- I couldnt figure out why Pylance kept flagging this.
     print(proc)
