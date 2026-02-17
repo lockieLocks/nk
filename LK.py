@@ -2,11 +2,13 @@ import discord
 import socket
 from colorama import Fore, init, Style
 from pystyle import Colorate, Colors
-from cogs.discord_token_checker import check_discord_token
+from cogs.token_checker import check_discord_token
+from cogs.webhook_checker import check_webhook
 import os
+import sys
 
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
+init(autoreset=True)
+
 def clear():
     if os.name == 'nt':
         os.system("cls")
@@ -14,7 +16,7 @@ def clear():
         os.system("clear")
 hostname = socket.gethostname()
 
-root = (Fore.LIGHTMAGENTA_EX+f"""
+root = (Fore.RED+f"""
 ┌──({hostname}&)-[~Menu -]│
 └─$> """)
 
@@ -50,9 +52,9 @@ def main():
 
 def discord_menu():
     clear()
-    root = f'''
+    root = (Fore.RED+f'''
 ┌──({hostname}&)-[~Menu -]│
-└─$>'''
+└─$>''')
     ascii_ = """
 
     .sSSSSs.                                                                                       .sSSSSSSs.  
@@ -69,37 +71,42 @@ def discord_menu():
         ---[INFO]---
     [1] Discord Token Checker
     [2] Discord Webhook Checker
-    [3] Discord Guild ID Checker
+    [3] Discord Guild INFO Checker
     """
     proc = Colorate.Diagonal(Colors.white_to_red, ascii_, 1) # pyright: ignore[reportAttributeAccessIssue] <- I couldnt figure out why Pylance kept flagging this.
     print(proc)
     opt = input(root).lower().strip()
     if opt == "1" or opt == "01":
-        istxt = input("Are you using a txt File? (y/n): ").lower().strip()
+        istxt = input("Are you using the token.txt file? (y/n): ").lower().strip()
         if istxt == "y" or istxt == "yes":
             txt_list = True
+            result = check_discord_token(token="None", txt_list=txt_list)
         else:
             txt_list = False
-        token = input("Enter a Discord token")
-        result = check_discord_token(token, txt_list)
+            token = input("Enter a Discord token: ")
+            result = check_discord_token(token, txt_list)
         print(result)
         input("Press Enter to continue...")
     elif opt == "2" or opt == "02":
-        print("Wont be added for a while, sorry.")
+        webhook = input("Enter a Discord webhook: ")
+        result = check_webhook(webhook)
+        print(result)
         input("Press Enter to continue...")
     elif opt == "3" or opt == "03":
         print("Wont be added for a while, sorry.")
         input("Press Enter to continue...")
+    elif opt == "n" or opt == "next":
+        code = input("Enter Invite Code >> ")
+        input("Press Enter to continue...")
+    elif opt == "q" or opt == "quit":
+        sys.exit()
     else:
         print("Invalid option")
         input("Press Enter to continue...")
-class Destruction:
-    def __init__(self):
-        pass
 
 try:
     while True:
         main()
 except KeyboardInterrupt:
     print("\n" + Fore.LIGHTMAGENTA_EX + "Goodbye!" + Style.RESET_ALL)
-    exit(0)
+    sys.exit()
