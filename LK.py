@@ -5,6 +5,7 @@ from pystyle import Colorate, Colors
 from cogs.token_checker import check_discord_token
 from cogs.webhook_checker import check_webhook
 from cogs.guild_checker import get_info
+from cogs.webhook_spammer import webhook_spammer
 import os
 import sys
 
@@ -17,10 +18,20 @@ def clear():
         os.system("clear")
 hostname = socket.gethostname()
 
-root = (Fore.RED+f"""
-┌──({hostname}&)-[~Menu -]│
-└─$> """)
-
+def root(discord: bool, MM: bool):
+    if MM:
+        iu = Fore.RED+f"""
+┌──({hostname}#LK)-[~Menu ~]│
+└─$> """
+    elif discord:
+        iu = Fore.RED+f"""
+┌──({hostname}#LK)-[~Discord ~]│
+└─$> """
+    else:
+        iu = Fore.RED+f"""
+┌──({hostname}#LK)-[~]│
+└─$> """
+    return iu
 ascii_ = r'''
 SSSSS       .sSSSSs.    .sSSS  SSSSS                   .sSSSSSSs.  
 SSSSS       SSSSSSSSSs. SSSSS  SSSSS                   `SSSS SSSSs 
@@ -45,7 +56,7 @@ def main():
     clear()
     COLS = Colorate.Diagonal(Colors.white_to_red, ascii_, 1) # pyright: ignore[reportAttributeAccessIssue] <- I couldnt figure out why Pylance kept flagging this.
     print(COLS)
-    opt = input(root).lower().strip()
+    opt = input(root(MM=True, discord=False)).lower().strip()
     if opt == "1" or opt == "01":
         print("Wont be added for a while, sorry.")
     elif opt == "2" or opt == "02":
@@ -53,9 +64,6 @@ def main():
 
 def discord_menu():
     clear()
-    root = (Fore.RED+f'''
-┌──({hostname}&)-[~Menu -]│
-└─$>''')
     ascii_ = r"""
 
     .sSSSSs.                                                                                       .sSSSSSSs.  
@@ -77,7 +85,7 @@ def discord_menu():
     """
     proc = Colorate.Diagonal(Colors.white_to_red, ascii_, 1) # pyright: ignore[reportAttributeAccessIssue] <- I couldnt figure out why Pylance kept flagging this.
     print(proc)
-    opt = input(root).lower().strip()
+    opt = input(root(MM=False, discord=True)).lower().strip()
     if opt == "1" or opt == "01":
         istxt = input("Are you using the token.txt file? (y/n): ").lower().strip()
         if istxt == "y" or istxt == "yes":
@@ -98,6 +106,12 @@ def discord_menu():
         code = input("Enter Invite Code >> ")
         print(get_info(code))
         input("Press Enter to Return...")
+    elif opt == '4':
+        webhook = input("Enter Webhook: ")
+        amount = int(input("Enter Amount of Messages >> "))
+        context = input("Enter Message to spam >> ")
+        print(webhook_spammer(webhook, amount, context))
+        input("Press Enter to Continue...")
     elif opt == "n" or opt == "next":
         print("Wont be added for a while, sorry.")
         input("Press Enter to Return...")
