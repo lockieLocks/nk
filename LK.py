@@ -7,6 +7,7 @@ from cogs.guild_checker import get_info
 from cogs.webhook_spammer import webhook_spammer
 from cogs.webhook_change_name import changer
 from cogs.webhook_delete import delete
+from cogs.nuker import SafeErase
 import os
 import sys
 
@@ -126,6 +127,11 @@ def discord_menu():
         webhook = input("Enter Webhook: ")
         file = input("Enter File PATH: ")
         print(changer(webhook, file))
+    elif opt == '8' or opt == '08':
+        token = input("Enter Bot Token >> ")
+        guild_id = int(input("Enter Guild ID >> "))
+        nk = SafeErase(token, guild_id)
+        nk.run_all()
     elif opt == "n" or opt == "next":
         print("Wont be added for a while, sorry.")
         input("Press Enter to Return...")
