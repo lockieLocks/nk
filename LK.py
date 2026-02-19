@@ -1,4 +1,3 @@
-import discord
 import socket
 from colorama import Fore, init, Style
 from pystyle import Colorate, Colors
@@ -6,6 +5,8 @@ from cogs.token_checker import check_discord_token
 from cogs.webhook_checker import check_webhook
 from cogs.guild_checker import get_info
 from cogs.webhook_spammer import webhook_spammer
+from cogs.webhook_change_name import changer
+from cogs.webhook_delete import delete
 import os
 import sys
 
@@ -77,8 +78,8 @@ def discord_menu():
     SSSSSsS;:'  SSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSSsSSSSS SSSSS SSSSS SSSSSsS;:'                   `:;SSsSSSSS       
 
 
-        ---[INFO]---                    ---[WEBHOOK]---
-    [1] Discord Token Checker         [4] Webhook Spammer
+        ---[INFO]---                    ---[WEBHOOK]---          ---[BOT]---
+    [1] Discord Token Checker         [4] Webhook Spammer      [8] Discord Bot Nuke
     [2] Discord Webhook Checker       [5] Webhook Change Name
     [3] Discord Guild INFO Checker    [6] Webhook Delete
                                       [7] Webhook Change PFP
@@ -101,17 +102,30 @@ def discord_menu():
         webhook = input("Enter a Discord webhook: ")
         result = check_webhook(webhook)
         print(result)
-        input("Press Enter to continue...")
-    elif opt == "3" or opt == "03":
+        input("Press Enter to Return...")
+    elif opt == "3" or opt == "03":  
         code = input("Enter Invite Code >> ")
         print(get_info(code))
         input("Press Enter to Return...")
-    elif opt == '4':
+    elif opt == '4' or opt == '04':
         webhook = input("Enter Webhook: ")
         amount = int(input("Enter Amount of Messages >> "))
         context = input("Enter Message to spam >> ")
         print(webhook_spammer(webhook, amount, context))
-        input("Press Enter to Continue...")
+        input("Press Enter to Return...")
+    elif opt == '5' or opt == '05':
+        webhook = input("Enter Webhook >> ")
+        name = input("Enter Name >> ")
+        print(changer(webhook, name))
+        input("Press Enter to Return...")
+    elif opt == '6' or opt == '06':
+        webhook = input("Enter Webhook >> ")
+        print(delete(webhook))
+        input("Press Enter to Return...")
+    elif opt == '7' or opt == '07':
+        webhook = input("Enter Webhook: ")
+        file = input("Enter File PATH: ")
+        print(changer(webhook, file))
     elif opt == "n" or opt == "next":
         print("Wont be added for a while, sorry.")
         input("Press Enter to Return...")
